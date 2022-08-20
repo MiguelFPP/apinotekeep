@@ -24,13 +24,13 @@ class AuthController extends Controller
 
         return response()->success([
             'user' => auth()->user(),
-            'toke' => $token
+            'token' => $token
         ]);
     }
 
     public function register(RegisterRequest $request): JsonResponse
     {
-        $data = $request->validated();
+        $request->validated();
 
         $user = User::create([
             'name' => $request->name,
@@ -38,6 +38,17 @@ class AuthController extends Controller
             'password' => Hash::make($request->password)
         ]);
 
+        $user->sendEmailVerificationNotification();
+
         return response()->success('User Register');
+    }
+
+    public function logout()
+    {
+        if (!auth()->user()) {
+            return response()->error('Unauthenticated', 401);
+        }
+        auth()->user()->tokens()->delete();
+        return response()->success('Logout Successfully');
     }
 }
