@@ -7,11 +7,12 @@ use App\Http\Requests\Profile\ChangePasswordRequest;
 use App\Http\Requests\Profile\ProfileUpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
-    public function show()
+    public function show(): JsonResponse
     {
         try {
             $user = auth()->user();
@@ -22,7 +23,7 @@ class ProfileController extends Controller
         }
     }
 
-    public function updateProfile(ProfileUpdateRequest $request)
+    public function updateProfile(ProfileUpdateRequest $request): JsonResponse
     {
         try {
             $request->validated();
@@ -44,7 +45,7 @@ class ProfileController extends Controller
         }
     }
 
-    public function changePassword(ChangePasswordRequest $request)
+    public function changePassword(ChangePasswordRequest $request): JsonResponse
     {
         try {
             $request->validated();

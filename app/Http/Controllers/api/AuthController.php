@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
     public function login(LoginRequest $request): JsonResponse
-
     {
         try {
             $data = $request->validated();
@@ -50,7 +49,7 @@ class AuthController extends Controller
         return response()->success('User Register');
     }
 
-    public function logout()
+    public function logout():JsonResponse
     {
         if (!auth()->user()) {
             return response()->error('Unauthenticated', 401);

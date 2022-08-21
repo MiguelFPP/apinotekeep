@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\api\AuthController;
+use App\Http\Controllers\Api\NoteController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\api\VerificationController;
 use Illuminate\Http\Request;
@@ -37,4 +38,14 @@ Route::controller(ProfileController::class)->middleware(['auth:sanctum', 'verifi
     Route::get('/profile', 'show');
     Route::post('/profile', 'updateProfile');
     Route::post('/profile/password', 'changePassword');
+});
+
+/* notes */
+Route::controller(NoteController::class)->middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::get('/notes', 'index');
+    Route::post('/notes', 'store');
+    Route::get('/notes/{id}', 'show');
+    Route::put('/notes/{id}', 'update');
+    Route::delete('/notes/{id}', 'delete');
+    Route::post('/notes/{id}/pinged', 'pinged');
 });
