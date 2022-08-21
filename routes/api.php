@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\api\AuthController;
+use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\api\VerificationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -30,3 +31,10 @@ Route::controller(AuthController::class)->group(function () {
 /* verification email */
 Route::get('email/verify/{id}', [VerificationController::class, 'verify'])->name('verification.verify'); // Make sure to keep this as your route name
 Route::get('email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
+
+/* profile */
+Route::controller(ProfileController::class)->middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::get('/profile', 'show');
+    Route::post('/profile', 'updateProfile');
+    Route::post('/profile/password', 'changePassword');
+});
