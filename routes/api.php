@@ -3,6 +3,7 @@
 use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\Api\NoteController;
 use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Api\TaskController;
 use App\Http\Controllers\api\VerificationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -48,4 +49,12 @@ Route::controller(NoteController::class)->middleware(['auth:sanctum', 'verified'
     Route::put('/notes/{id}', 'update');
     Route::delete('/notes/{id}', 'delete');
     Route::post('/notes/{id}/pinged', 'pinged');
+});
+
+/* tasks */
+Route::controller(TaskController::class)->middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::get('/tasks', 'index');
+    Route::post('/tasks', 'store');
+    Route::delete('/tasks/{id}', 'delete');
+    Route::post('/tasks/{id}/completed', 'completed');
 });
