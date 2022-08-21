@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\NoteResource;
 use App\Models\Image;
 use App\Models\Note;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -18,7 +19,7 @@ class NoteController extends Controller
             $user_id = auth()->user()->id;
 
             if (!$user_id) {
-                return response()->json(['error' => 'Unauthorized'], 401);
+                return response()->error('Unauthorized', 401);
             }
 
             $notes = Note::where('user_id', $user_id)
@@ -38,7 +39,7 @@ class NoteController extends Controller
         try {
             $user_id = auth()->user()->id;
             if (!$user_id) {
-                return response()->json(['error' => 'Unauthorized'], 401);
+                return response()->error('Unauthorized', 401);
             }
 
             $note = new Note();
@@ -59,14 +60,15 @@ class NoteController extends Controller
         try {
             $user_id = auth()->user()->id;
             if (!$user_id) {
-                return response()->json(['error' => 'Unauthorized'], 401);
+                return response()->error('Unauthorized', 401);
             }
             $note = Note::where('user_id', $user_id)
                 ->where('id', $id)
                 ->with('images')
                 ->first();
+
             if (!$note) {
-                return response()->json(['error' => 'Not found'], 404);
+                return response()->error('Not found', 404);
             }
             return response()->success(new NoteResource($note));
         } catch (\Exception $e) {
@@ -79,13 +81,14 @@ class NoteController extends Controller
         try {
             $user_id = auth()->user()->id;
             if (!$user_id) {
-                return response()->json(['error' => 'Unauthorized'], 401);
+                return response()->error('Unauthorized', 401);
             }
             $note = Note::where('user_id', $user_id)
                 ->where('id', $id)
                 ->first();
+
             if (!$note) {
-                return response()->json(['error' => 'Not found'], 404);
+                return response()->error('Not found', 404);
             }
             $note->title = $request->title;
             $note->content = $request->content;
@@ -101,7 +104,7 @@ class NoteController extends Controller
         try {
             $user_id = auth()->user()->id;
             if (!$user_id) {
-                return response()->json(['error' => 'Unauthorized'], 401);
+                return response()->error('Unauthorized', 401);
             }
 
             $note = Note::where('user_id', $user_id)
@@ -109,7 +112,7 @@ class NoteController extends Controller
                 ->first();
 
             if (!$note) {
-                return response()->json(['error' => 'Not found'], 404);
+                return response()->error('Not found', 404);
             }
 
             $images = Image::where('imageable_id', $note->id)
@@ -134,12 +137,15 @@ class NoteController extends Controller
     {
         try {
             $user_id = auth()->user()->id;
+
             if (!$user_id) {
                 return response()->error('Unauthorized', 401);
             }
+
             $note = Note::where('user_id', $user_id)
-                ->where('id', $id)
-                ->first();
+            ->where('id', $id)
+            ->first();
+
             if (!$note) {
                 return response()->error('Not found', 404);
             }
@@ -147,7 +153,8 @@ class NoteController extends Controller
             $note->save();
             return response()->success(new NoteResource($note));
         } catch (\Exception $e) {
-            return response()->error($e->getMessage(), 500);
+            dd($e);
+            return response()->error($e->getMessage(), $e->getCode());
         }
     }
 }

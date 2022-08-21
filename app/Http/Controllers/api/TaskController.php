@@ -52,6 +52,7 @@ class TaskController extends Controller
                 return response()->error('User not found', 404);
             }
             $task = Task::where('user_id', $user_id)->find($id);
+
             if (!$task) {
                 return response()->error('Task not found', 404);
             }
@@ -70,6 +71,7 @@ class TaskController extends Controller
                 return response()->error('User not found', 404);
             }
             $task = Task::where('user_id', $user_id)->find($id);
+
             if (!$task) {
                 return response()->error('Task not found', 404);
             }
