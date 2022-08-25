@@ -1,9 +1,9 @@
 <?php
 
 use App\Http\Controllers\api\AuthController;
-use App\Http\Controllers\Api\NoteController;
-use App\Http\Controllers\Api\ProfileController;
-use App\Http\Controllers\Api\TaskController;
+use App\Http\Controllers\api\NoteController;
+use App\Http\Controllers\api\ProfileController;
+use App\Http\Controllers\api\TaskController;
 use App\Http\Controllers\api\VerificationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
